@@ -10,9 +10,10 @@
   [C_O]
     order = FIRST
     family = LAGRANGE
+    scaling = 1E5
     [InitialCondition]
-      type = ConstantIC
-      value = 1
+      type = FunctionIC
+      function = C_O_IC_function
       variable = C_O
     []
   []
@@ -120,6 +121,10 @@
     nodeid = 0
     variable = C_R
   []
+  [E]
+    type = FunctionValuePostprocessor
+    function = E
+  []
 []
 
 [NodalKernels]
@@ -129,23 +134,39 @@
     boundary = 'left'
   []
   [Udeposit_other]
-    type = UdepositFunc
+    type = Udeposit
     variable = C_R
     coupled_var = 'C_O'
     boundary = 'left'
     Exp_1 = Exp_1
     Exp_2 = Exp_2
-    K_O = 1
   []
 []
 
 [Functions]
+  E0 = '1'
+  E1 = '1.4'
+  v = '1'
   [Exp_1]
     type = ParsedFunction
-    value = '1'
+    vars = 'n F R T alpha'
+    value = 'if(t<=0.9, exp(-alpha*n*F*(${E1}-${v}*t-${E0})/R/T), exp(-alpha*n*F*(${E1}+${v}*t-${E0}-2*${v}*0.9)/R/T))'
+    vals = '3 96485 8.314 300 0.5'
   []
   [Exp_2]
     type = ParsedFunction
-    value = '1'
+    vars = 'n F R T alpha'
+    value = 'if(t<=0.9, exp((1-alpha)*n*F*(${E1}-${v}*t-${E0})/R/T), exp((1-alpha)*n*F*(${E1}+${v}*t-${E0}-2*${v}*0.9)/R/T))'
+    vals = '3 96485 8.314 300 0.5'
+  []
+  [E]
+    type = ParsedFunction
+    value = 'if(t<=0.9, ${E1}-${v}*t, ${E1}+${v}*t-2*${v}*0.9)'
+  []
+  [C_O_IC_function]
+    type = ParsedFunction
+    vars = 'a b'
+    value = 'a*x+b'
+    vals = '1E-6 1'
   []
 []
