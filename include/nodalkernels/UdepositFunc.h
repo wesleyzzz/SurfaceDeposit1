@@ -24,11 +24,11 @@ protected:
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
   virtual Real computeQpOffDiagJacobian(unsigned int jvar) override;
-  Real _K_O;
+
 private:
   const VariableValue & _couple_var;
   const unsigned _couple_var_offjac;
-
+  Real _K_O;
   Function & _func_1;
  
   Function & _func_2;

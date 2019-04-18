@@ -11,7 +11,7 @@ validParams<UdepositFunc>()
 {
   InputParameters params = validParams<NodalKernel>();
   params.addCoupledVar("coupled_var", "	Choose the variable you want to couple");
-  params.addParam<Real>("_K_O", 1.0, "standard reaction rate");
+  params.addParam<Real>("K_O", 1.0, "standard reaction rate");
   params.addRequiredParam<FunctionName>("Exp_1", "Exp_1 term in Butler Volmer Eq");
   params.addRequiredParam<FunctionName>("Exp_2", "Exp_2 term in Butler Volmer Eq");
   return params;
@@ -21,6 +21,7 @@ UdepositFunc::UdepositFunc(const InputParameters & parameters)
   : NodalKernel(parameters), 
     _couple_var(coupledValue("coupled_var")),
     _couple_var_offjac(coupled("coupled_var")),
+    _K_O(getParam<Real>("K_O")),
     _func_1(getFunction("Exp_1")),
     _func_2(getFunction("Exp_2"))
 {
