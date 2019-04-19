@@ -5,6 +5,7 @@
 
 // Forward Declarations
 class FluxBCudot;
+class Function;
 
 template <>
 InputParameters validParams<FluxBCudot>();
@@ -31,6 +32,7 @@ private:
   const unsigned _couple_var_offjac;
   const VariableValue & _u_dot;
   const VariableValue & _du_dot_du;
+  Function & _func_1;
 
 };
 
