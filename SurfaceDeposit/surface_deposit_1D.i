@@ -56,6 +56,7 @@
     variable = C_O
     boundary = 'left'
     coupled_var = 'C_R'
+    Exp_1 = Exp1
   []
 []
 
@@ -133,5 +134,12 @@
     variable = C_R
     coupled_var = 'C_O'
     boundary = 'left'
+  []
+[]
+
+[Functions]
+  [Exp1]
+    type = ConstantFunction
+    value = 1
   []
 []
